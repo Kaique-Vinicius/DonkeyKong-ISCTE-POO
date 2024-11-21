@@ -10,7 +10,7 @@ public class Door extends GameObject {
 
 	@Override
 	public String getName() {
-		return "DoorWay";
+		return "DoorClosed";
 	}
 
 }

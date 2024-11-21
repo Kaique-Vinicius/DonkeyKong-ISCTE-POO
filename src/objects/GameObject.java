@@ -35,4 +35,20 @@ public abstract class GameObject implements ImageTile {
 		}
 	}
 	*/
+	
+	public static GameObject criarGameObject(char character, Point2D position) {
+		System.out.println(character);
+		switch(character) {
+			case 'W': return new Wall(position); 
+			case 'H': return new Manel(position);
+			case 't': return new Trap(position);
+			case 'S': return new Stairs(position);
+			case 'G': return new DonkeyKong(position);
+			case 's': return new Sword(position);
+			case '0': return new Door(position);
+			case ' ': return new Floor(position);
+			
+			default: throw new IllegalArgumentException();
+		}
+	}
 }

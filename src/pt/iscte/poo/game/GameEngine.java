@@ -10,7 +10,9 @@ public class GameEngine implements Observer {
 	private Room currentRoom;
 	private int lastTickProcessed = 0;
 	
-	public GameEngine() {
+	private static GameEngine INSTANCE; 
+	
+	private GameEngine() {
 		currentRoom = new Room("room0.txt");
 		currentRoom.loadRoom();
 		currentRoom.initializeRoom();
@@ -41,6 +43,14 @@ public class GameEngine implements Observer {
 		lastTickProcessed++;
 	}
 
-
+	public static GameEngine getInstance() {
+        if (INSTANCE == null)
+            INSTANCE = new GameEngine();
+        return INSTANCE;
+    }
+	
+	public Room getCurrentRoom() {
+		return this.currentRoom;
+	}
 
 }

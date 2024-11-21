@@ -33,13 +33,15 @@ public class Manel implements ImageTile {
 		return 2;
 	}
 
-	public void move() {
-		int k = ImageGUI.getInstance().keyPressed();
-		position = position.plus(Direction.directionFor(k).asVector());
+	public void move(Direction direction) {
+		System.out.println("Movi para " + direction.name());
+		System.out.println("Antes "+ position.toString());
+		position = position.plus(direction.asVector());
+		System.out.println("Depois "+ position.toString());
 	}
 	
-	public void setPosition(Point2D newPosition) {
-        position = newPosition;
-    }
+//	public void setPosition(Point2D newPosition) {
+//        position = newPosition;
+//    }
 	
 }

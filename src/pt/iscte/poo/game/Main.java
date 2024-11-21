@@ -8,10 +8,6 @@ public class Main {
 		ImageGUI gui = ImageGUI.getInstance();
 		GameEngine engine = new GameEngine();
 		
-		Room room = new Room();
-		room.loadRoom("room0.txt");
-		room.initializeRoom();
-		
 		gui.setStatusMessage("Good luck!");
 		gui.registerObserver(engine);
 		gui.go();

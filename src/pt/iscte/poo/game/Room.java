@@ -15,23 +15,26 @@ import objects.Trap;
 import objects.Wall;
 import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.gui.ImageTile;
+import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
 public class Room {
 	
 	private Point2D heroStartingPosition = new Point2D(0, 0);
 	private Manel manel;
+	
+	String roomfile = "";
 	private char[][] room;
 	
-	public Room() {
+	public Room(String roomFile) {
 		manel = new Manel(heroStartingPosition);
-		ImageGUI.getInstance().addImage(manel);
+		this.roomfile = roomFile;
 		room = new char[10][10];
 	}
 	
-	public void loadRoom(String file){
+	public void loadRoom(){
         try {
-        	Scanner scanner = new Scanner(new File(file));
+        	Scanner scanner = new Scanner(new File(this.roomfile));
         	
         	if (scanner.hasNextLine()) {
         		//Ignora primeira linha
@@ -75,7 +78,10 @@ public class Room {
                 if (cell == 'W') {
                     tiles.add(new Wall(position));
                 } else if (cell == 'H') {
-                    heroStartingPosition = position; // Atualiza a posição inicial do Manel
+                	System.out.println("Novo Hero");
+                	 manel = new Manel(position);
+                	 System.out.println(manel.getPosition().toString());
+                    tiles.add(manel);// Atualiza a posição inicial do Manel
                 } else if (cell == 't') {
                     tiles.add(new Trap(position));
                 } else if (cell == 'S') {
@@ -85,21 +91,15 @@ public class Room {
                 }
             }
         }
-
+        
         // Cria ou atualiza o Manel com a posição inicial
-        if (manel == null) {
-            manel = new Manel(heroStartingPosition);
-            ImageGUI.getInstance().addImage(manel);
-        } else {
-            manel.setPosition(heroStartingPosition);
-        }
 
         // Adiciona os outros objetos ao GUI
         ImageGUI.getInstance().addImages(tiles);
     }
 	
-	public void moveManel() {
-		manel.move();
+	public void moveManel(Direction direction) {
+		manel.move(direction);
 	}
 	
 }

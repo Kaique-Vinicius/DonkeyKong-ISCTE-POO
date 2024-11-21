@@ -2,7 +2,7 @@ package interfaces;
 
 import objects.GameObject;
 
-public interface Interact {
+public interface Interactable {
 	
 	public void Interact(GameObject i);
 

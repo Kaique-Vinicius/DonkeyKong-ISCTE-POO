@@ -85,6 +85,9 @@ public class Room {
                 char cell = room[row][col];
                 Point2D position = new Point2D(col, row);
                 
+                Floor floor = new Floor(position);
+                gameObjects.add(floor);
+                
                 GameObject gameObject = GameObject.criarGameObject(cell, position);
                 gameObjects.add(gameObject);
                 

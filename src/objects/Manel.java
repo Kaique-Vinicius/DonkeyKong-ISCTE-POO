@@ -4,9 +4,11 @@ import interfaces.Movable;
 import pt.iscte.poo.game.GameEngine;
 import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
-import pt.iscte.poo.utils.Vector2D;
 
 public class Manel extends GameObject implements Movable {
+	
+	private boolean isJumping = false;
+	private int jumpEndTick = -1;
 	
 	public Manel(Point2D initialPosition){
 		super(initialPosition);
@@ -25,10 +27,27 @@ public class Manel extends GameObject implements Movable {
 
 	public void move(Direction direction) {
 		
-		if(isWithinBounds(getPosition().plus(direction.asVector())))
-			super.setPosition(getPosition().plus(direction.asVector()));
+		Point2D newPosition = getPosition().plus(direction.asVector());
 		
-		GameEngine.getInstance().getCurrentRoom();
+		if(direction == Direction.UP && !isJumping) {
+			isJumping = true;
+			jump(newPosition);
+			System.out.println("Jumped");
+			return;
+		}
+		
+		if(!isWithinBounds(newPosition))
+			return;
+		
+		GameObject objectAtNewPosition = GameEngine.getInstance().getCurrentRoom().gameObjectPosition(newPosition);
+		
+		if(objectAtNewPosition != null && objectAtNewPosition.getName().equals("Wall")) {
+			return;
+		}
+		
+		super.setPosition(newPosition);
+		
+		fall();
 	}
 	
 	public boolean isWithinBounds(Point2D position) {
@@ -37,4 +56,30 @@ public class Manel extends GameObject implements Movable {
 		return x>-1 && x<10 && y>-1 && y<10;
 	}
 	
+	public void fall() {
+		while(true) {
+			Point2D positionBelow = getPosition().plus(Direction.DOWN.asVector());
+			
+			if(!isWithinBounds(positionBelow)) {
+				break;
+			}
+			
+			GameObject objectBelow = GameEngine.getInstance().getCurrentRoom().gameObjectPosition(positionBelow);
+			
+			if(objectBelow != null &&
+					 (objectBelow.getName().equals("Wall") || 
+				      objectBelow.getName().equals("Stairs") || 
+				      objectBelow.getName().equals("Trap"))) {
+				break;
+			}
+			
+			super.setPosition(positionBelow);
+		}
+	}
+	
+	public void jump(Point2D jumpPosition) {
+		if(isWithinBounds(jumpPosition)) {
+			super.setPosition(jumpPosition);
+		}
+	}
 }

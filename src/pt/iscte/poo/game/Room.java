@@ -8,15 +8,9 @@ import java.util.List;
 import java.util.Scanner;
 
 //GameObject imports
-import objects.DonkeyKong;
-import objects.Door;
 import objects.Floor;
 import objects.GameObject;
 import objects.Manel;
-import objects.Stairs;
-import objects.Sword;
-import objects.Trap;
-import objects.Wall;
 //Utils imports
 import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.utils.Direction;
@@ -85,8 +79,10 @@ public class Room {
                 char cell = room[row][col];
                 Point2D position = new Point2D(col, row);
                 
-                Floor floor = new Floor(position);
-                gameObjects.add(floor);
+                if(cell == 's' || cell == 'H' || cell == 'G') {
+                	Floor floor = new Floor(position);
+                    gameObjects.add(floor);
+                }
                 
                 GameObject gameObject = GameObject.criarGameObject(cell, position);
                 gameObjects.add(gameObject);
@@ -103,6 +99,20 @@ public class Room {
 	
 	public void moveManel(Direction direction) {
 		manel.move(direction);
+	}
+	
+	public GameObject gameObjectPosition(Point2D point) {
+
+		for(GameObject obj : gameObjects) {
+			if(obj.getPosition().equals(point)) {
+				return obj;
+			}
+		}
+		return null;
+	}
+	
+	public Manel getManel() {
+		return this.manel;
 	}
 	
 }

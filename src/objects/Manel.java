@@ -67,9 +67,9 @@ public class Manel extends GameObject implements Movable {
 			GameObject objectBelow = GameEngine.getInstance().getCurrentRoom().gameObjectPosition(positionBelow);
 			
 			if(objectBelow != null &&
-					 (objectBelow.getName().equals("Wall") || 
-				      objectBelow.getName().equals("Stairs") || 
-				      objectBelow.getName().equals("Trap"))) {
+					 (objectBelow instanceof Wall || 
+				      objectBelow instanceof Stairs || 
+				      objectBelow instanceof Trap)) {
 				break;
 			}
 			

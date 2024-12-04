@@ -25,17 +25,6 @@ public abstract class GameObject implements ImageTile {
 		return 1;
 	}
 	
-	/*
-	public void moveAllObjects(int k) {
-		for(GameObject obj : objects) {
-			if(obj instanceof Movable ) {
-				Movable m = (Movable) obj;
-				m.move(k);
-			}
-		}
-	}
-	*/
-	
 	public static GameObject criarGameObject(char character, Point2D position) {
 		System.out.println(character);
 		switch(character) {
@@ -46,6 +35,8 @@ public abstract class GameObject implements ImageTile {
 			case 'G': return new DonkeyKong(position);
 			case 's': return new Sword(position);
 			case '0': return new Door(position);
+			case 'b': return new Steak(position);
+			case 'P': return new Princess(position);
 			case ' ': return new Floor(position);
 			
 			default: throw new IllegalArgumentException();

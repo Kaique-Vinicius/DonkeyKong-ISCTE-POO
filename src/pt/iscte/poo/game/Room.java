@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import objects.DonkeyKong;
 //GameObject imports
 import objects.Floor;
 import objects.GameObject;
@@ -32,7 +33,6 @@ public class Room {
 		this.roomfile = roomFile;
 		this.gameObjects = new ArrayList<>();
 		
-		//Apagar depois
 		room = new char[10][10];
 	}
 	
@@ -42,7 +42,7 @@ public class Room {
         	
         	if (scanner.hasNextLine()) {
         		//Ignora primeira linha
-                scanner.nextLine();
+        		ImageGUI.getInstance().setStatusMessage(scanner.nextLine());
             }
         	
         	int row = 0;
@@ -79,7 +79,7 @@ public class Room {
                 char cell = room[row][col];
                 Point2D position = new Point2D(col, row);
                 
-                if(cell == 's' || cell == 'H' || cell == 'G') {
+                if(cell == 's' || cell == 'H' || cell == 'G' || cell == 'b' || cell == 'P') {
                 	Floor floor = new Floor(position);
                     gameObjects.add(floor);
                 }
@@ -99,6 +99,19 @@ public class Room {
 	
 	public void moveManel(Direction direction) {
 		manel.move(direction);
+	}
+	
+	public void dashManel() {
+		manel.dash(manel.getPosition());
+	}
+	
+	public void updateMovementsOfKong() {
+		for(GameObject obj : gameObjects) {
+			if(obj instanceof DonkeyKong) {
+				DonkeyKong donkeykong = (DonkeyKong) obj;
+				donkeykong.updateMovement(heroStartingPosition, 0);
+			}
+		}
 	}
 	
 	public GameObject gameObjectPosition(Point2D point) {

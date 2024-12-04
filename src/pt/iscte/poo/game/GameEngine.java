@@ -26,11 +26,17 @@ public class GameEngine implements Observer {
 			int k = ImageGUI.getInstance().keyPressed();
 			System.out.println("Keypressed " + k);
 			if (Direction.isDirection(k)) {
-				System.out.println("Direction! ");
 				Direction direction = Direction.directionFor(k);
 				currentRoom.moveManel(direction);
 			}
+			
+			if(k == 32) {
+				currentRoom.dashManel();
+			}
 		}
+		
+		currentRoom.updateMovementsOfKong();
+		
 		int t = ImageGUI.getInstance().getTicks();
 		while (lastTickProcessed < t) {
 			processTick();
@@ -39,7 +45,6 @@ public class GameEngine implements Observer {
 	}
 
 	private void processTick() {
-		//System.out.println("Tic Tac : " + lastTickProcessed);
 		lastTickProcessed++;
 	}
 

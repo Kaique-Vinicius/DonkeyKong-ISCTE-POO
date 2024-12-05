@@ -81,7 +81,11 @@ public class Room {
                 char cell = room[row][col];
                 Point2D position = new Point2D(col, row);
                 
+<<<<<<< HEAD
                 if(cell == 's' || cell == 'H' || cell == 'G' || cell == 'b' || cell == 'P') {
+=======
+                if(cell == 's' || cell == 'H' || cell == 'G') {
+>>>>>>> parent of 84347ee (interact with objects)
                 	Floor floor = new Floor(position);
                     gameObjects.add(floor);
                 }

@@ -17,5 +17,4 @@ public class Sword extends GameObject {
 	public int getLayer() {
 		return 1;
 	}
-
 }

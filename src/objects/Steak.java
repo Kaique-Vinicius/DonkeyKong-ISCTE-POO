@@ -17,5 +17,5 @@ public class Steak extends GameObject {
 	public int getLayer() {
 		return 0;
 	}
-
 }
+

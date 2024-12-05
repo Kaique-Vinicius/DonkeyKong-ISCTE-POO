@@ -78,20 +78,17 @@ public class Manel extends GameObject implements Movable, Interactable {
 
 	public void Interact(GameObject obj) {
 
-		for(int i = 0;i <GameEngine.getInstance().getCurrentRoom().getGameObjects().size(); i++) {
-
-			GameObject currentObject = GameEngine.getInstance().getCurrentRoom().getGameObjects().get(i);
-
-			if(currentObject.equals(obj)) {
-
-				ImageGUI.getInstance().setStatusMessage("Espada Coletada");
-				
-
-				GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(i);
-				ImageGUI.getInstance().removeImage(obj);
-				break;
-			}
+		if(obj instanceof Sword) {
+			ImageGUI.getInstance().setStatusMessage("Espada Coletada");
+		} else if (obj instanceof Steak){
+			ImageGUI.getInstance().setStatusMessage("Bife Coletado");
+		} else {
+			return;
 		}
+
+		GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(obj);
+		ImageGUI.getInstance().removeImage(obj);
+
 		ImageGUI.getInstance().update();
 	}
 }

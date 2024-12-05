@@ -109,16 +109,11 @@ public class Room {
 	public void moveManel(Direction direction) {
 		manel.move(direction);
 		System.out.println(manel.getPosition());
-		System.out.println(gameObjectPosition(manel.getPosition()));
 
 		GameObject objectAtPosition = gameObjectPosition(manel.getPosition());
-		if(objectAtPosition instanceof Sword) {
+		if(objectAtPosition != null) {
 			manel.Interact(objectAtPosition);
 		}
-		if(objectAtPosition instanceof Steak) {
-			manel.Interact(objectAtPosition);
-		}
-
 	}
 
 	public void dashManel() {
@@ -144,15 +139,11 @@ public class Room {
 
 		for(GameObject obj : gameObjects) {
 			if(obj.getPosition().equals(point)) {
-
-
 				if(obj instanceof Floor) {
 					floor = obj;
-				}
-				else {
+				} else {
 					return obj;
 				}
-
 			}
 		}
 		return floor;

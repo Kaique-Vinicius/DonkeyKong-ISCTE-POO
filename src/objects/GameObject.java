@@ -46,6 +46,7 @@ public abstract class GameObject implements ImageTile {
 			case 'G': return new DonkeyKong(position);
 			case 's': return new Sword(position);
 			case '0': return new Door(position);
+			case 'b': return new Steak(position);
 			case ' ': return new Floor(position);
 			
 			default: throw new IllegalArgumentException();

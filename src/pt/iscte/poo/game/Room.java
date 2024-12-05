@@ -11,6 +11,8 @@ import java.util.Scanner;
 import objects.Floor;
 import objects.GameObject;
 import objects.Manel;
+import objects.Steak;
+import objects.Sword;
 //Utils imports
 import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.utils.Direction;
@@ -79,7 +81,7 @@ public class Room {
                 char cell = room[row][col];
                 Point2D position = new Point2D(col, row);
                 
-                if(cell == 's' || cell == 'H' || cell == 'G') {
+                if(cell == 's' || cell == 'H' || cell == 'G'|| cell == 'b') {
                 	Floor floor = new Floor(position);
                     gameObjects.add(floor);
                 }
@@ -99,6 +101,7 @@ public class Room {
 	
 	public void moveManel(Direction direction) {
 		manel.move(direction);
+		interactWithObjects();
 	}
 	
 	public GameObject gameObjectPosition(Point2D point) {
@@ -113,6 +116,28 @@ public class Room {
 	
 	public Manel getManel() {
 		return this.manel;
+	}
+	
+	public void interactWithObjects() {
+		Point2D manelPosition = manel.getPosition();
+		
+		for(int i = 0;i < gameObjects.size(); i++) {
+			GameObject obj = gameObjects.get(i);
+			
+			if(obj.getPosition().equals(manelPosition)) {
+				if(obj instanceof Sword) {
+					ImageGUI.getInstance().setStatusMessage("Espada Coletada");
+					
+				} else if (obj instanceof Steak) {
+					ImageGUI.getInstance().setStatusMessage("Bife Coletado");
+					
+				}
+				
+				gameObjects.remove(i);
+				break;
+			}
+		}
+		ImageGUI.getInstance().update();
 	}
 	
 }

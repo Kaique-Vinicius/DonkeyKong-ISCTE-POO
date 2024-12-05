@@ -47,6 +47,10 @@ public class GameEngine implements Observer {
 	private void processTick() {
 		lastTickProcessed++;
 	}
+	
+	public int getProcessTick() {
+		return lastTickProcessed;
+	}
 
 	public static GameEngine getInstance() {
         if (INSTANCE == null)

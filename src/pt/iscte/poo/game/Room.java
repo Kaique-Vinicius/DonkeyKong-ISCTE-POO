@@ -21,6 +21,7 @@ public class Room {
 	
 	private Point2D heroStartingPosition = new Point2D(0, 0);
 	private Manel manel;
+	private int roomNumber;
 	
 	private List<GameObject> gameObjects;
 	String roomfile = "";
@@ -41,8 +42,13 @@ public class Room {
         	Scanner scanner = new Scanner(new File(this.roomfile));
         	
         	if (scanner.hasNextLine()) {
-        		//Ignora primeira linha
-        		ImageGUI.getInstance().setStatusMessage(scanner.nextLine());
+        		String firstLine = scanner.nextLine();
+        		
+        		if(firstLine.charAt(0) != '#') {
+        			this.roomNumber = 3;
+        		}
+        		
+        		this.roomNumber = Integer.parseInt(Character.toString(firstLine.charAt(1)));
             }
         	
         	int row = 0;
@@ -110,9 +116,13 @@ public class Room {
 		for(GameObject obj : gameObjects) {
 			if(obj instanceof DonkeyKong) {
 				DonkeyKong donkeykong = (DonkeyKong) obj;
-				donkeykong.updateMovement(heroStartingPosition, 0);
+				donkeykong.updateMovement(heroStartingPosition, roomNumber);
 			}
 		}
+	}
+	
+	public int getRoomNumber() {
+		return roomNumber;
 	}
 	
 	public GameObject gameObjectPosition(Point2D point) {

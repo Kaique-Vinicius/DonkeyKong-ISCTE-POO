@@ -1,5 +1,8 @@
 package objects;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import interfaces.Movable;
 import pt.iscte.poo.game.GameEngine;
 import pt.iscte.poo.gui.ImageGUI;
@@ -9,10 +12,12 @@ import pt.iscte.poo.utils.Vector2D;
 
 public class DonkeyKong extends GameObject implements Movable {
 	
-	private static final int Minimun_Level_For_Advanced_Mov = 2;
+	private static final int Minimun_Level_For_Advanced_Mov = 1;
+	private List<GameObject> bananas;
 	
 	public DonkeyKong(Point2D position) {
 		super(position);
+		bananas = new ArrayList<>();
 	}
 	
 	@Override
@@ -28,7 +33,7 @@ public class DonkeyKong extends GameObject implements Movable {
 	@Override
 	public void move(Direction direction) {
 		Point2D newPosition = getPosition().plus(direction.asVector());
-		if(!ImageGUI.getInstance().isWithinBounds(newPosition)) {
+		if(!isWithinBounds(newPosition)) {
 			return;
 		}
 		
@@ -39,6 +44,10 @@ public class DonkeyKong extends GameObject implements Movable {
 		}
 		
 		setPosition(newPosition);
+		Banana banana = new Banana(newPosition);
+		bananas.add(banana);
+		
+		ImageGUI.getInstance().addImage(banana);
 	}
 	
 	public void moveRandomly() {
@@ -56,6 +65,12 @@ public class DonkeyKong extends GameObject implements Movable {
 		}
 	}
 	
+	public boolean isWithinBounds(Point2D position) {
+		int x = position.getX();
+		int y = position.getY();
+		return x>-1 && x<10 && y>-1 && y<10;
+	}
+	
 	public void updateMovement(Point2D jumpManPosition, int currentLevel) {
 		if(currentLevel < Minimun_Level_For_Advanced_Mov) {
 			moveRandomly();
@@ -63,6 +78,10 @@ public class DonkeyKong extends GameObject implements Movable {
 		else {
 			moveTowards(jumpManPosition);
 		}
+	}
+	
+	public List<GameObject> getBananas(){
+		return bananas;
 	}
 
 }

@@ -7,9 +7,6 @@ import pt.iscte.poo.utils.Point2D;
 
 public class Manel extends GameObject implements Movable {
 	
-	private boolean isJumping = false;
-	private int jumpEndTick = -1;
-	
 	public Manel(Point2D initialPosition){
 		super(initialPosition);
 	}
@@ -29,13 +26,6 @@ public class Manel extends GameObject implements Movable {
 		
 		Point2D newPosition = getPosition().plus(direction.asVector());
 		
-		if(direction == Direction.UP && !isJumping) {
-			isJumping = true;
-			jump(newPosition);
-			System.out.println("Jumped");
-			return;
-		}
-		
 		if(!isWithinBounds(newPosition))
 			return;
 		
@@ -46,7 +36,6 @@ public class Manel extends GameObject implements Movable {
 		}
 		
 		super.setPosition(newPosition);
-		
 		fall();
 	}
 	
@@ -77,9 +66,11 @@ public class Manel extends GameObject implements Movable {
 		}
 	}
 	
-	public void jump(Point2D jumpPosition) {
-		if(isWithinBounds(jumpPosition)) {
-			super.setPosition(jumpPosition);
+	public void dash(Point2D dash) {
+		Point2D dashPosition = new Point2D(dash.getX() + 2, dash.getY());
+		
+		if(isWithinBounds(dashPosition)) {
+			super.setPosition(dashPosition);
 		}
 	}
 }

@@ -36,6 +36,10 @@ public class Manel extends GameObject implements Movable, Interactable {
 		if(objectAtNewPosition != null && objectAtNewPosition.getName().equals("Wall")) {
 			return;
 		}
+		
+		if(objectAtNewPosition instanceof Trap) {
+			return;
+		}
 
 		super.setPosition(newPosition);
 		fall();

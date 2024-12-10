@@ -6,12 +6,12 @@ public interface Attackable {
 	
 	public void Attack(GameObject a);
 	
-	public int getLife();
+	public float getLife();
 	
-	public void setLife();
+	public void setLife(float dmg);
 	
-	public int getAttack();
+	public float getAttack();
 	
-	public void setAttack();
+	public void setAttack(float dmg);
 
 }

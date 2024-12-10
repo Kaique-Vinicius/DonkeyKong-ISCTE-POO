@@ -1,12 +1,6 @@
 package pt.iscte.poo.game;
 
-<<<<<<< Updated upstream
 import objects.DonkeyKong;
-=======
-import java.io.FileNotFoundException;
-
-import objects.Manel;
->>>>>>> Stashed changes
 import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.observer.Observed;
 import pt.iscte.poo.observer.Observer;
@@ -42,13 +36,9 @@ public class GameEngine implements Observer {
 				currentRoom.dashManel();
 			}
 		}
-<<<<<<< Updated upstream
-		
-=======
 
 		currentRoom.updateMovementsOfKong();
 
->>>>>>> Stashed changes
 		int t = ImageGUI.getInstance().getTicks();
 		while (lastTickProcessed < t) {
 			processTick();

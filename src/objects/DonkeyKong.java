@@ -3,6 +3,7 @@ package objects;
 import java.util.ArrayList;
 import java.util.List;
 
+import interfaces.Attackable;
 import interfaces.Movable;
 import pt.iscte.poo.game.GameEngine;
 import pt.iscte.poo.gui.ImageGUI;
@@ -10,7 +11,10 @@ import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 import pt.iscte.poo.utils.Vector2D;
 
-public class DonkeyKong extends GameObject implements Movable {
+public class DonkeyKong extends GameObject implements Movable, Attackable {
+	
+	private float lifePoints = 5;
+	private float attackPoints = 1;
 	
 	private static final int Minimun_Level_For_Advanced_Mov = 1;
 	private List<GameObject> bananas;
@@ -39,7 +43,10 @@ public class DonkeyKong extends GameObject implements Movable {
 		
 		GameObject objectAtNewPosition = GameEngine.getInstance().getCurrentRoom().gameObjectPosition(newPosition);
 		
-		if(objectAtNewPosition != null && (objectAtNewPosition.getName().equals("Wall") || objectAtNewPosition.getName().equals("Stairs"))) {
+		if(objectAtNewPosition != null && (objectAtNewPosition instanceof Wall) || 
+											objectAtNewPosition instanceof Stairs || 
+											objectAtNewPosition instanceof Door ||
+											objectAtNewPosition instanceof Manel) {
 			return;
 		}
 		
@@ -47,7 +54,6 @@ public class DonkeyKong extends GameObject implements Movable {
 		Banana banana = new Banana(newPosition);
 		
 		bananas.add(banana);
-		
 		ImageGUI.getInstance().addImage(banana);
 	}
 	
@@ -103,4 +109,31 @@ public class DonkeyKong extends GameObject implements Movable {
 		return bananas;
 	}
 
+	@Override
+	public void Attack(GameObject a) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public float getLife() {
+		return this.lifePoints;
+	}
+
+
+	@Override
+	public float getAttack() {
+		return this.attackPoints;
+	}
+
+	@Override
+	public void setLife(float dmg) {
+		this.lifePoints -= dmg;
+		
+	}
+
+	@Override
+	public void setAttack(float dmg) {
+		this.attackPoints += dmg;
+	}
 }

@@ -10,8 +10,8 @@ import pt.iscte.poo.utils.Point2D;
 
 public class Manel extends GameObject implements Movable, Interactable, Attackable {
 	
-	private int lifePoints = 5;
-	private int attackPoints = 1;
+	private float lifePoints = 5;
+	private float attackPoints = 1;
 	
 	public Manel(Point2D initialPosition){
 		super(initialPosition);
@@ -40,8 +40,9 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 		if(objectAtNewPosition != null && objectAtNewPosition.getName().equals("Wall")) {
 			return;
 		}
-
-		if(objectAtNewPosition instanceof Trap) {
+		
+		if(objectAtNewPosition instanceof DonkeyKong) {
+			Attack(objectAtNewPosition);
 			return;
 		}
 
@@ -105,28 +106,42 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 
 	@Override
 	public void Attack(GameObject a) {
-		// TODO Auto-generated method stub
-		
+		if(a instanceof DonkeyKong) {
+			
+			DonkeyKong kong = (DonkeyKong) a;
+			
+			kong.setLife(this.attackPoints);
+			
+			ImageGUI.getInstance().setStatusMessage("Manel atacou Kong! Vida restante: " + kong.getLife());
+			
+			if(kong.getLife() <= 0) {
+				GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(kong);
+				ImageGUI.getInstance().removeImage(kong);
+				ImageGUI.getInstance().setStatusMessage("DonkeyKong foi de arrasta pra cima");
+			}
+			
+			ImageGUI.getInstance().update();
+		}
 	}
 
 	@Override
-	public int getLife() {
+	public float getLife() {
 		return lifePoints;
 	}
 
 	@Override
-	public void setLife() {
+	public float getAttack() {
+		return attackPoints;
+	}
+
+	@Override
+	public void setLife(float dmg) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public int getAttack() {
-		return attackPoints;
-	}
-
-	@Override
-	public void setAttack() {
+	public void setAttack(float dmg) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -25,7 +25,7 @@ public abstract class GameObject implements ImageTile {
 		return 1;
 	}
 	
-	public static GameObject criarGameObject(char character, Point2D position) {
+	public static GameObject criarGameObject(char character, Point2D position, String nextRoomFile) {
 		switch(character) {
 			case 'W': return new Wall(position); 
 			case 'H': return new Manel(position);
@@ -33,7 +33,7 @@ public abstract class GameObject implements ImageTile {
 			case 'S': return new Stairs(position);
 			case 'G': return new DonkeyKong(position);
 			case 's': return new Sword(position);
-			case '0': return new Door(position);
+			case '0': return new Door(position, nextRoomFile);
 			case 'b': return new Steak(position);
 			case 'P': return new Princess(position);
 			case ' ': return new Floor(position);

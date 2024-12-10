@@ -40,7 +40,7 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 		if(objectAtNewPosition != null && objectAtNewPosition.getName().equals("Wall")) {
 			return;
 		}
-		
+
 		if(objectAtNewPosition instanceof Trap) {
 			return;
 		}
@@ -88,14 +88,17 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 
 		if(obj instanceof Sword) {
 			ImageGUI.getInstance().setStatusMessage("Espada Coletada");
+			GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(obj);
+			ImageGUI.getInstance().removeImage(obj);
 		} else if (obj instanceof Steak){
 			ImageGUI.getInstance().setStatusMessage("Bife Coletado");
-		} else {
-			return;
+			GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(obj);
+			ImageGUI.getInstance().removeImage(obj);
+		} else if(obj instanceof Door){
+			Door door = (Door) obj;
+			
+			GameEngine.getInstance().changeRoom(door.getNextRoomFile());
 		}
-
-		GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(obj);
-		ImageGUI.getInstance().removeImage(obj);
 
 		ImageGUI.getInstance().update();
 	}

@@ -1,5 +1,6 @@
 package objects;
 
+import interfaces.Attackable;
 import interfaces.Interactable;
 import interfaces.Movable;
 import pt.iscte.poo.game.GameEngine;
@@ -7,8 +8,11 @@ import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
-public class Manel extends GameObject implements Movable, Interactable {
-
+public class Manel extends GameObject implements Movable, Interactable, Attackable {
+	
+	private int lifePoints = 5;
+	private int attackPoints = 1;
+	
 	public Manel(Point2D initialPosition){
 		super(initialPosition);
 	}
@@ -94,5 +98,33 @@ public class Manel extends GameObject implements Movable, Interactable {
 		ImageGUI.getInstance().removeImage(obj);
 
 		ImageGUI.getInstance().update();
+	}
+
+	@Override
+	public void Attack(GameObject a) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getLife() {
+		return lifePoints;
+	}
+
+	@Override
+	public void setLife() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getAttack() {
+		return attackPoints;
+	}
+
+	@Override
+	public void setAttack() {
+		// TODO Auto-generated method stub
+		
 	}
 }

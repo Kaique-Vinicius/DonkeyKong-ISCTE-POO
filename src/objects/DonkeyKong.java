@@ -45,6 +45,7 @@ public class DonkeyKong extends GameObject implements Movable {
 		
 		setPosition(newPosition);
 		Banana banana = new Banana(newPosition);
+		
 		bananas.add(banana);
 		
 		ImageGUI.getInstance().addImage(banana);
@@ -78,6 +79,24 @@ public class DonkeyKong extends GameObject implements Movable {
 		else {
 			moveTowards(jumpManPosition);
 		}
+	}
+	
+	public void moveBananas() {
+		List<GameObject> bananasToRemove = new ArrayList<>();
+		
+		for(GameObject b : bananas) {
+			Point2D currentPosition = b.getPosition();
+			Point2D newPosition = currentPosition.plus(Direction.DOWN.asVector());
+			
+			if(isWithinBounds(newPosition)) {
+				b.setPosition(newPosition);
+			}else {
+				bananasToRemove.add(b);
+				ImageGUI.getInstance().removeImage(b);
+			}
+		}
+		
+		bananas.removeAll(bananasToRemove);
 	}
 	
 	public List<GameObject> getBananas(){

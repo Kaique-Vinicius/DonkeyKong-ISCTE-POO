@@ -9,5 +9,9 @@ public interface Attackable {
 	public int getLife();
 	
 	public void setLife();
+	
+	public int getAttack();
+	
+	public void setAttack();
 
 }

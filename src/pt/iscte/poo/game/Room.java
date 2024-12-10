@@ -148,6 +148,10 @@ public class Room {
 		}
 		return floor;
 	}
+	
+	public GameObject getGameObjectByName(String gameObjectName) {
+		return gameObjects.stream().filter(obj -> obj.getName().equals(gameObjectName)).findFirst().orElse(null);
+	}
 
 	public Manel getManel() {
 		return this.manel;

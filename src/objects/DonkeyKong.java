@@ -12,18 +12,18 @@ import pt.iscte.poo.utils.Point2D;
 import pt.iscte.poo.utils.Vector2D;
 
 public class DonkeyKong extends GameObject implements Movable, Attackable {
-	
+
 	private float lifePoints = 5;
 	private float attackPoints = 1;
-	
+
 	private static final int Minimun_Level_For_Advanced_Mov = 1;
 	private List<GameObject> bananas;
-	
+
 	public DonkeyKong(Point2D position) {
 		super(position);
 		bananas = new ArrayList<>();
 	}
-	
+
 	@Override
 	public String getName() {
 		return "DonkeyKong";
@@ -40,44 +40,50 @@ public class DonkeyKong extends GameObject implements Movable, Attackable {
 		if(!isWithinBounds(newPosition)) {
 			return;
 		}
-		
+
 		GameObject objectAtNewPosition = GameEngine.getInstance().getCurrentRoom().gameObjectPosition(newPosition);
-		
+
 		if(objectAtNewPosition != null && (objectAtNewPosition instanceof Wall) || 
-											objectAtNewPosition instanceof Stairs || 
-											objectAtNewPosition instanceof Door ||
-											objectAtNewPosition instanceof Manel) {
+				objectAtNewPosition instanceof Stairs || 
+				objectAtNewPosition instanceof Door) {
 			return;
 		}
 		
+		if(objectAtNewPosition instanceof Manel) {
+			Attack(objectAtNewPosition);
+			return;
+		}
+
 		setPosition(newPosition);
 		Banana banana = new Banana(newPosition);
-		
+
 		bananas.add(banana);
 		ImageGUI.getInstance().addImage(banana);
+		
+
 	}
-	
+
 	public void moveRandomly() {
 		Direction moveRandomly = Direction.random();
 		move(moveRandomly);
 	}
-	
+
 	public void moveTowards(Point2D jumpManPosition) {
 		Point2D currentPosition = getPosition();
 		int differenceX = Integer.compare(jumpManPosition.getX(), currentPosition.getX());
-		
+
 		if(differenceX != 0) {
 			Direction direction = Direction.forVector(new Vector2D(differenceX, 0));
 			move(direction);
 		}
 	}
-	
+
 	public boolean isWithinBounds(Point2D position) {
 		int x = position.getX();
 		int y = position.getY();
 		return x>-1 && x<10 && y>-1 && y<10;
 	}
-	
+
 	public void updateMovement(Point2D jumpManPosition, int currentLevel) {
 		if(currentLevel < Minimun_Level_For_Advanced_Mov) {
 			moveRandomly();
@@ -86,14 +92,14 @@ public class DonkeyKong extends GameObject implements Movable, Attackable {
 			moveTowards(jumpManPosition);
 		}
 	}
-	
+
 	public void moveBananas() {
 		List<GameObject> bananasToRemove = new ArrayList<>();
-		
+
 		for(GameObject b : bananas) {
 			Point2D currentPosition = b.getPosition();
 			Point2D newPosition = currentPosition.plus(Direction.DOWN.asVector());
-			
+
 			if(isWithinBounds(newPosition)) {
 				b.setPosition(newPosition);
 			}else {
@@ -101,10 +107,10 @@ public class DonkeyKong extends GameObject implements Movable, Attackable {
 				ImageGUI.getInstance().removeImage(b);
 			}
 		}
-		
+
 		bananas.removeAll(bananasToRemove);
 	}
-	
+
 	public List<GameObject> getBananas(){
 		return bananas;
 	}
@@ -112,7 +118,22 @@ public class DonkeyKong extends GameObject implements Movable, Attackable {
 	@Override
 	public void Attack(GameObject a) {
 		// TODO Auto-generated method stub
-		
+		if(a instanceof Manel) {
+
+			Manel manel = (Manel) a;
+
+			manel.setLife(this.attackPoints);
+
+			ImageGUI.getInstance().setStatusMessage("Kong atacou Manel! Vida restante: " + manel.getLife());
+
+			if(manel.getLife() <= 0) {
+				GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(manel);
+				ImageGUI.getInstance().removeImage(manel);
+				ImageGUI.getInstance().setStatusMessage("Game Over!");
+			}
+
+			ImageGUI.getInstance().update();
+		}
 	}
 
 	@Override
@@ -129,7 +150,17 @@ public class DonkeyKong extends GameObject implements Movable, Attackable {
 	@Override
 	public void setLife(float dmg) {
 		this.lifePoints -= dmg;
-		
+
+		if(this.lifePoints <= 0) {
+			for(GameObject obj : bananas) {
+				ImageGUI.getInstance().removeImage(obj);
+			}
+			bananas.clear();
+
+			GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(this);
+			ImageGUI.getInstance().removeImage(this);
+			ImageGUI.getInstance().setStatusMessage("DonkeyKong foi derrotado!");
+		}
 	}
 
 	@Override

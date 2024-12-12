@@ -1,8 +1,5 @@
 package objects;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import interfaces.Attackable;
 import interfaces.Movable;
 import pt.iscte.poo.game.GameEngine;
@@ -17,11 +14,9 @@ public class DonkeyKong extends GameObject implements Movable, Attackable {
 	private float attackPoints = 1;
 
 	private static final int Minimun_Level_For_Advanced_Mov = 1;
-	private List<GameObject> bananas;
 
 	public DonkeyKong(Point2D position) {
 		super(position);
-		bananas = new ArrayList<>();
 	}
 
 	@Override
@@ -48,7 +43,7 @@ public class DonkeyKong extends GameObject implements Movable, Attackable {
 				objectAtNewPosition instanceof Door) {
 			return;
 		}
-		
+
 		if(objectAtNewPosition instanceof Manel) {
 			Attack(objectAtNewPosition);
 			return;
@@ -57,9 +52,8 @@ public class DonkeyKong extends GameObject implements Movable, Attackable {
 		setPosition(newPosition);
 		Banana banana = new Banana(newPosition);
 
-		bananas.add(banana);
+		GameEngine.getInstance().getCurrentRoom().addBananas(banana);
 		ImageGUI.getInstance().addImage(banana);
-		
 
 	}
 
@@ -91,28 +85,6 @@ public class DonkeyKong extends GameObject implements Movable, Attackable {
 		else {
 			moveTowards(jumpManPosition);
 		}
-	}
-
-	public void moveBananas() {
-		List<GameObject> bananasToRemove = new ArrayList<>();
-
-		for(GameObject b : bananas) {
-			Point2D currentPosition = b.getPosition();
-			Point2D newPosition = currentPosition.plus(Direction.DOWN.asVector());
-
-			if(isWithinBounds(newPosition)) {
-				b.setPosition(newPosition);
-			}else {
-				bananasToRemove.add(b);
-				ImageGUI.getInstance().removeImage(b);
-			}
-		}
-
-		bananas.removeAll(bananasToRemove);
-	}
-
-	public List<GameObject> getBananas(){
-		return bananas;
 	}
 
 	@Override
@@ -152,11 +124,6 @@ public class DonkeyKong extends GameObject implements Movable, Attackable {
 		this.lifePoints -= dmg;
 
 		if(this.lifePoints <= 0) {
-			for(GameObject obj : bananas) {
-				ImageGUI.getInstance().removeImage(obj);
-			}
-			bananas.clear();
-
 			GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(this);
 			ImageGUI.getInstance().removeImage(this);
 			ImageGUI.getInstance().setStatusMessage("DonkeyKong foi derrotado!");

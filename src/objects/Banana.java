@@ -12,5 +12,11 @@ public class Banana extends GameObject{
 	public String getName() {
 		return "Banana";
 	}
+	
+	public boolean isWithinBounds(Point2D position) {
+		int x = position.getX();
+		int y = position.getY();
+		return x>-1 && x<10 && y>-1 && y<10;
+	}
 
 }

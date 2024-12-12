@@ -1,11 +1,9 @@
 package pt.iscte.poo.game;
 
-import objects.DonkeyKong;
 import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.observer.Observed;
 import pt.iscte.poo.observer.Observer;
 import pt.iscte.poo.utils.Direction;
-import pt.iscte.poo.utils.Point2D;
 
 public class GameEngine implements Observer {
 
@@ -36,9 +34,7 @@ public class GameEngine implements Observer {
 				currentRoom.dashManel();
 			}
 		}
-
-		currentRoom.updateMovementsOfKong();
-
+		
 		int t = ImageGUI.getInstance().getTicks();
 		while (lastTickProcessed < t) {
 			processTick();
@@ -51,10 +47,8 @@ public class GameEngine implements Observer {
 		
 		currentRoom.updateMovementsOfKong();
 		
-		DonkeyKong donkeyKong = (DonkeyKong) currentRoom.getGameObjectByName("DonkeyKong");
-		if(donkeyKong != null) {
-			donkeyKong.moveBananas();
-		}
+		if(!currentRoom.getBananas().isEmpty())
+			currentRoom.moveBananas();
 	}
 
 	public int getProcessTick() {

@@ -100,7 +100,6 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 			
 			GameEngine.getInstance().changeRoom(door.getNextRoomFile());
 		}
-
 		ImageGUI.getInstance().update();
 	}
 

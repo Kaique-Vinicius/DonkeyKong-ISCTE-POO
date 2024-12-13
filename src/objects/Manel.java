@@ -45,6 +45,7 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 			Attack(objectAtNewPosition);
 			return;
 		}
+		
 
 		super.setPosition(newPosition);
 		fall();
@@ -98,6 +99,11 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 		} else if(obj instanceof Door){
 			Door door = (Door) obj;
 			
+			if(obj instanceof Princess) {
+				ImageGUI.getInstance().setStatusMessage("Parabéns!!! Você completou o jogo");
+				ImageGUI.getInstance().dispose();
+				return;
+			}
 			GameEngine.getInstance().changeRoom(door.getNextRoomFile());
 		}
 		ImageGUI.getInstance().update();

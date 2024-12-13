@@ -38,7 +38,7 @@ public abstract class GameObject implements ImageTile {
 			case 'P': return new Princess(position);
 			case ' ': return new Floor(position);
 			
-			default: throw new IllegalArgumentException();
+			default: throw new IllegalArgumentException("Caractere inválido: " + character + " na posição " + position);
 		}
 	}
 }

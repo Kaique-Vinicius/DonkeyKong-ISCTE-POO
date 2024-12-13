@@ -1,5 +1,4 @@
 package pt.iscte.poo.game;
-
 //imports
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -65,7 +64,7 @@ public class Room {
 					}
 				}
 			}
-			
+
 			System.out.println("Próxima sala: " + nextRoomFile); 
 			int row = 0;
 
@@ -94,30 +93,35 @@ public class Room {
 	}
 
 	public void initializeRoom() {
+		if(nextRoomFile == null) {
+			System.out.println("Chegou à sala final");
+		}
 
 		for (int row = 0; row < room.length; row++) {
 			for (int col = 0; col < room[row].length; col++) {
 				char cell = room[row][col];
 				Point2D position = new Point2D(col, row);
 
+				System.out.println("Caractere encontrado: " + cell);
+
 				if(cell == 's' || cell == 'H' || cell == 'G' || cell == 'b' || cell == 'P') {
-					Floor floor = new Floor(position);
-					gameObjects.add(floor);
+					gameObjects.add(new Floor(position));
 				}
-				
+
 				if(nextRoomFile != null) {
 					GameObject gameObject = GameObject.criarGameObject(cell, position, nextRoomFile);					
 					gameObjects.add(gameObject);
-					
+
 					if(gameObject instanceof Manel) {
 						manel = (Manel) gameObject;
-					}
+					}				
 				}
 			}
 		}
 
 		// Adiciona os outros objetos ao GUI
 		ImageGUI.getInstance().addImages(gameObjects);
+		ImageGUI.getInstance().update();
 	}
 
 	public void moveManel(Direction direction) {

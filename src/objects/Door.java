@@ -15,7 +15,7 @@ public class Door extends GameObject {
 
 	@Override
 	public String getName() {
-		return "DoorClosed";
+		return nextRoomFile != null ? "DoorOpen" : "DoorClosed" ;
 	}
 	
 	public String getNextRoomFile() {

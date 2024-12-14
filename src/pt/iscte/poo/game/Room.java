@@ -11,7 +11,6 @@ import objects.DonkeyKong;
 //GameObject imports
 import objects.Floor;
 import objects.GameObject;
-import objects.HiddenTrap;
 import objects.Manel;
 import objects.Steak;
 //Utils imports
@@ -65,15 +64,15 @@ public class Room {
 				}
 			}
 
-			System.out.println("Próxima sala: " + (nextRoomFile != null ? nextRoomFile : "Nenhuma"));
-
+	        System.out.println("Próxima sala: " + (nextRoomFile != null ? nextRoomFile : "Nenhuma"));
+	        
 			int row = 0;
 
 			while (scanner.hasNextLine() && row < room.length) {
 				String line = scanner.nextLine();
 
 				for (int col = 0; col < line.length() && col < room[row].length; col++) {
-					room[row][col] = line.charAt(col) != ' ' ? line.charAt(col) : ' ';
+						room[row][col] = line.charAt(col) != ' ' ? line.charAt(col) : ' ';
 				}
 				row++;
 			}
@@ -94,26 +93,23 @@ public class Room {
 				char cell = room[row][col];
 				Point2D position = new Point2D(col, row);
 
-				System.out.println("Caractere encontrado: " + cell + " na posição: " + position);
-
-				if(cell == 's' || cell == 'H' || cell == 'G' || cell == 'b' || cell == 'P' || cell == 'B' || cell == 'T') {
+		        System.out.println("Caractere encontrado: " + cell + " na posição: " + position);
+				
+				if(cell == 's' || cell == 'H' || cell == 'G' || cell == 'b' || cell == 'P') {
 					gameObjects.add(new Floor(position));
 				}
-
-
-
 
 				if(nextRoomFile != null) {
 					GameObject gameObject = GameObject.criarGameObject(cell, position, nextRoomFile);	
 					if(gameObject != null)
-						System.out.println("Objeto criado: " + gameObject.getName() + " em " + position);
-					gameObjects.add(gameObject);
+		                System.out.println("Objeto criado: " + gameObject.getName() + " em " + position);
+						gameObjects.add(gameObject);
 
 					if(gameObject instanceof Manel) {
 						manel = (Manel) gameObject;
 					}				
 				} else {
-					System.out.println("Nenhum objeto criado para: " + cell);
+	                System.out.println("Nenhum objeto criado para: " + cell);
 
 				}
 			}
@@ -148,7 +144,7 @@ public class Room {
 			}
 		}
 	}
-
+	
 	public void updateSteaks() {
 		for(GameObject obj : gameObjects) {
 			if(obj instanceof Steak) {

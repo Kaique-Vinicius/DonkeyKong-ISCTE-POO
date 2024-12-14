@@ -10,7 +10,6 @@ import pt.iscte.poo.utils.Point2D;
 
 public class Manel extends GameObject implements Movable, Interactable, Attackable {
 
-	private int lives = 3;
 	private float lifePoints = 5;
 	private float attackPoints = 1;
 
@@ -91,7 +90,9 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 	public void Interact(GameObject obj) {
 
 		if(obj instanceof Sword) {
-			ImageGUI.getInstance().setStatusMessage("Espada Coletada");
+			Sword sword = (Sword) obj;
+			ImageGUI.getInstance().setStatusMessage("Espada Coletada, dano passa a ser:" + (attackPoints+sword.getDamageStatus()));
+			setAttack(sword.getDamageStatus());
 			GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(obj);
 			ImageGUI.getInstance().removeImage(obj);
 		} else if (obj instanceof Steak){
@@ -106,6 +107,12 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 		}else if(obj instanceof Princess) {
 			ImageGUI.getInstance().setStatusMessage("Parabéns!!! Você completou o jogo");
 			ImageGUI.getInstance().dispose();
+			try {
+				Thread.sleep(100);
+			}catch(Exception e) {
+				System.err.println(e);
+			}
+
 			System.exit(0);
 		} else if(obj instanceof HiddenTrap) {
 			HiddenTrap trap = (HiddenTrap) obj;
@@ -151,21 +158,42 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 
 	@Override
 	public void setLife(float dmg) {
-		lifePoints -= dmg;
-	    if (lifePoints <= 0) {
-	        lifePoints = 0;
-	        System.out.println("Manel foi derrotado!");
-	        // Lógica para o fim do jogo, reinício ou outras ações
-	    } else {
-	        System.out.println("Manel sofreu dano! Vida restante: " + lifePoints);
-	    }
-	    ImageGUI.getInstance().setStatusMessage("Vida do Manel: " + lifePoints);
+		GameEngine gameEngine = GameEngine.getInstance();
+		ImageGUI imageGUI = ImageGUI.getInstance();
 		
+		if(gameEngine.getManelRemainingLifes() != 0) {
+			lifePoints -= dmg;
+			
+			if (lifePoints <= 0) {
+				lifePoints = 0;
+				gameEngine.subtractManelLife();
+				
+				if(gameEngine.getManelRemainingLifes() > 0) {
+					//	gameEngine.getCurrentRoom().getManel().setPosition(gameEngine.getCurrentRoom().getHeroStartingPosition());
+					imageGUI.setStatusMessage("Vidas Restantes: " + gameEngine.getManelRemainingLifes());
+					replenishLife();
+				}else {
+					imageGUI.setStatusMessage("GameOver! Reiniciando Jogo");
+					System.exit(0);
+				}
+			} else {
+				System.out.println("Manel sofreu dano! Vida restante: " + lifePoints);
+			}
+			
+			imageGUI.setStatusMessage("Vida do Manel: " + lifePoints);
+			
+		}else {
+			imageGUI.setStatusMessage("GameOver!");
+		}
+
+	}
+	
+	public void replenishLife() {
+		this.lifePoints = 5;
 	}
 
 	@Override
 	public void setAttack(float dmg) {
-		// TODO Auto-generated method stub
-
+		attackPoints+= dmg;
 	}
 }

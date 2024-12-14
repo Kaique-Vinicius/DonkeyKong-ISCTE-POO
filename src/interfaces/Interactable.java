@@ -6,8 +6,4 @@ public interface Interactable {
 	
 	public void Interact(GameObject i);
 	
-	
-	
-	
-
 }

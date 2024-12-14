@@ -140,8 +140,16 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 
 	@Override
 	public void setLife(float dmg) {
-		// TODO Auto-generated method stub
-
+		lifePoints -= dmg;
+	    if (lifePoints <= 0) {
+	        lifePoints = 0;
+	        System.out.println("Manel foi derrotado!");
+	        // Lógica para o fim do jogo, reinício ou outras ações
+	    } else {
+	        System.out.println("Manel sofreu dano! Vida restante: " + lifePoints);
+	    }
+	    ImageGUI.getInstance().setStatusMessage("Vida do Manel: " + lifePoints);
+		
 	}
 
 	@Override

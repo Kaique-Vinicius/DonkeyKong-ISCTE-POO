@@ -36,6 +36,8 @@ public abstract class GameObject implements ImageTile {
 			case '0': return new Door(position, nextRoomFile);
 			case 'b': return new Steak(position);
 			case 'P': return new Princess(position);
+			case 'B': return new Bat(position);
+			case 'T': return new HiddenTrap(position);
 			case ' ': return new Floor(position);
 			
 			default: throw new IllegalArgumentException("Caractere inválido: " + character + " na posição " + position);

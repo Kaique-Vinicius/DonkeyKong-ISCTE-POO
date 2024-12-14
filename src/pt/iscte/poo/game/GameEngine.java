@@ -13,12 +13,12 @@ public class GameEngine implements Observer {
 	private static GameEngine INSTANCE; 
 
 	private GameEngine() {
-		currentRoom = new Room("room2.txt");
+		currentRoom = new Room("room0.txt");
 		currentRoom.loadRoom();
 		currentRoom.initializeRoom();
 		ImageGUI.getInstance().update();
 	}
-
+	
 	@Override
 	public void update(Observed source) {
 
@@ -46,6 +46,8 @@ public class GameEngine implements Observer {
 		lastTickProcessed++;
 		
 		currentRoom.updateMovementsOfKong();
+		currentRoom.updateSteaks();
+		currentRoom.updateMovementsOfBats();
 		
 		if(!currentRoom.getBananas().isEmpty())
 			currentRoom.moveBananas();
@@ -82,6 +84,8 @@ public class GameEngine implements Observer {
 		ImageGUI.getInstance().setName("Vitória! Você salvou a princesa!");
 		System.exit(0);
 	}
+	
+	
 
 
 

@@ -10,6 +10,7 @@ import pt.iscte.poo.utils.Point2D;
 
 public class Manel extends GameObject implements Movable, Interactable, Attackable {
 
+	private int lives = 3;
 	private float lifePoints = 5;
 	private float attackPoints = 1;
 
@@ -70,7 +71,8 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 			if(objectBelow != null &&
 					(objectBelow instanceof Wall || 
 							objectBelow instanceof Stairs || 
-							objectBelow instanceof Trap)) {
+							objectBelow instanceof Trap ||
+							objectBelow instanceof HiddenTrap)) {
 				break;
 			}
 
@@ -93,7 +95,8 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 			GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(obj);
 			ImageGUI.getInstance().removeImage(obj);
 		} else if (obj instanceof Steak){
-			ImageGUI.getInstance().setStatusMessage("Bife Coletado");
+			Steak steak = (Steak) obj;
+			steak.applyEffect(this);
 			GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(obj);
 			ImageGUI.getInstance().removeImage(obj);
 		} else if(obj instanceof Door){
@@ -104,7 +107,15 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 			ImageGUI.getInstance().setStatusMessage("Parabéns!!! Você completou o jogo");
 			ImageGUI.getInstance().dispose();
 			System.exit(0);
+		} else if(obj instanceof HiddenTrap) {
+			HiddenTrap trap = (HiddenTrap) obj;
+			trap.activateTrap();
+			trap.interactWithTrap(this);
+//			GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(trap);
+//			ImageGUI.getInstance().removeImage(trap);
+
 		}
+	
 		ImageGUI.getInstance().update();
 	}
 

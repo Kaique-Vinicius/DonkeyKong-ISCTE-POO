@@ -6,11 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import objects.Bat;
 import objects.DonkeyKong;
 //GameObject imports
 import objects.Floor;
 import objects.GameObject;
+import objects.HiddenTrap;
 import objects.Manel;
+import objects.Steak;
 //Utils imports
 import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.utils.Direction;
@@ -62,15 +65,15 @@ public class Room {
 				}
 			}
 
-	        System.out.println("Próxima sala: " + (nextRoomFile != null ? nextRoomFile : "Nenhuma"));
-	        
+			System.out.println("Próxima sala: " + (nextRoomFile != null ? nextRoomFile : "Nenhuma"));
+
 			int row = 0;
 
 			while (scanner.hasNextLine() && row < room.length) {
 				String line = scanner.nextLine();
 
 				for (int col = 0; col < line.length() && col < room[row].length; col++) {
-						room[row][col] = line.charAt(col) != ' ' ? line.charAt(col) : ' ';
+					room[row][col] = line.charAt(col) != ' ' ? line.charAt(col) : ' ';
 				}
 				row++;
 			}
@@ -91,23 +94,26 @@ public class Room {
 				char cell = room[row][col];
 				Point2D position = new Point2D(col, row);
 
-		        System.out.println("Caractere encontrado: " + cell + " na posição: " + position);
-				
-				if(cell == 's' || cell == 'H' || cell == 'G' || cell == 'b' || cell == 'P') {
+				System.out.println("Caractere encontrado: " + cell + " na posição: " + position);
+
+				if(cell == 's' || cell == 'H' || cell == 'G' || cell == 'b' || cell == 'P' || cell == 'B' || cell == 'T') {
 					gameObjects.add(new Floor(position));
 				}
+
+
+
 
 				if(nextRoomFile != null) {
 					GameObject gameObject = GameObject.criarGameObject(cell, position, nextRoomFile);	
 					if(gameObject != null)
-		                System.out.println("Objeto criado: " + gameObject.getName() + " em " + position);
-						gameObjects.add(gameObject);
+						System.out.println("Objeto criado: " + gameObject.getName() + " em " + position);
+					gameObjects.add(gameObject);
 
 					if(gameObject instanceof Manel) {
 						manel = (Manel) gameObject;
 					}				
 				} else {
-	                System.out.println("Nenhum objeto criado para: " + cell);
+					System.out.println("Nenhum objeto criado para: " + cell);
 
 				}
 			}
@@ -139,6 +145,24 @@ public class Room {
 			if(obj instanceof DonkeyKong) {
 				DonkeyKong donkeykong = (DonkeyKong) obj;
 				donkeykong.updateMovement(heroStartingPosition, roomNumber);
+			}
+		}
+	}
+
+	public void updateSteaks() {
+		for(GameObject obj : gameObjects) {
+			if(obj instanceof Steak) {
+				Steak steak = (Steak) obj;
+				steak.decreaseTurns();
+			}
+		}
+	}
+
+	public void updateMovementsOfBats() {
+		for(GameObject obj : new ArrayList<>(gameObjects)) {
+			if(obj instanceof Bat) {
+				Bat bat = (Bat) obj;
+				bat.moveRandomly();;
 			}
 		}
 	}

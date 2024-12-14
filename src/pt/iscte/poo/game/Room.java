@@ -49,45 +49,34 @@ public class Room {
 			if (scanner.hasNextLine()) {
 				firstLine = scanner.nextLine();
 
-				if(firstLine.contains("#")) {
-
+				if(firstLine.startsWith("#")) {
 					try {
-						Scanner scanFirstLine = new Scanner(firstLine.substring(1));
-						String[] splitedLine = scanFirstLine.nextLine().split(";");
-
+						String[] splitedLine = firstLine.substring(1).split(";");
 						nextRoomFile = splitedLine[1];
-
-						scanFirstLine.close();
-					}
-					catch(Exception e) {
+					} catch(Exception e) {
 						System.err.println(e);
 					}
+				} else {
+					System.out.println("Sala não tem cabeçalho");
+					scanner = new Scanner(new File(this.roomfile));
 				}
 			}
 
-			System.out.println("Próxima sala: " + nextRoomFile); 
+	        System.out.println("Próxima sala: " + (nextRoomFile != null ? nextRoomFile : "Nenhuma"));
+	        
 			int row = 0;
 
 			while (scanner.hasNextLine() && row < room.length) {
 				String line = scanner.nextLine();
 
-				int k = 0;
-
 				for (int col = 0; col < line.length() && col < room[row].length; col++) {
-					if(line.charAt(k) != ' ')
-						room[row][col] = line.charAt(k);
-					else
-						room[row][col] = ' ';
-
-					k++;
+						room[row][col] = line.charAt(col) != ' ' ? line.charAt(col) : ' ';
 				}
-
 				row++;
 			}
 
 			scanner.close();
-		}
-		catch(FileNotFoundException  e) {
+		} catch(FileNotFoundException  e) {
 			System.err.println(e);
 		}
 	}
@@ -102,26 +91,32 @@ public class Room {
 				char cell = room[row][col];
 				Point2D position = new Point2D(col, row);
 
-				System.out.println("Caractere encontrado: " + cell);
-
+		        System.out.println("Caractere encontrado: " + cell + " na posição: " + position);
+				
 				if(cell == 's' || cell == 'H' || cell == 'G' || cell == 'b' || cell == 'P') {
 					gameObjects.add(new Floor(position));
 				}
 
 				if(nextRoomFile != null) {
-					GameObject gameObject = GameObject.criarGameObject(cell, position, nextRoomFile);					
-					gameObjects.add(gameObject);
+					GameObject gameObject = GameObject.criarGameObject(cell, position, nextRoomFile);	
+					if(gameObject != null)
+		                System.out.println("Objeto criado: " + gameObject.getName() + " em " + position);
+						gameObjects.add(gameObject);
 
 					if(gameObject instanceof Manel) {
 						manel = (Manel) gameObject;
 					}				
+				} else {
+	                System.out.println("Nenhum objeto criado para: " + cell);
+
 				}
 			}
 		}
 
 		// Adiciona os outros objetos ao GUI
 		ImageGUI.getInstance().addImages(gameObjects);
-		ImageGUI.getInstance().update();
+		System.out.println("Objetos adicionados ao GUI: " + gameObjects.size());
+
 	}
 
 	public void moveManel(Direction direction) {

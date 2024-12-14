@@ -9,10 +9,10 @@ import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
 public class Manel extends GameObject implements Movable, Interactable, Attackable {
-	
+
 	private float lifePoints = 5;
 	private float attackPoints = 1;
-	
+
 	public Manel(Point2D initialPosition){
 		super(initialPosition);
 	}
@@ -40,12 +40,12 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 		if(objectAtNewPosition != null && objectAtNewPosition.getName().equals("Wall")) {
 			return;
 		}
-		
+
 		if(objectAtNewPosition instanceof DonkeyKong) {
 			Attack(objectAtNewPosition);
 			return;
 		}
-		
+
 
 		super.setPosition(newPosition);
 		fall();
@@ -98,13 +98,12 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 			ImageGUI.getInstance().removeImage(obj);
 		} else if(obj instanceof Door){
 			Door door = (Door) obj;
-			
-			if(obj instanceof Princess) {
-				ImageGUI.getInstance().setStatusMessage("Parabéns!!! Você completou o jogo");
-				ImageGUI.getInstance().dispose();
-				return;
-			}
 			GameEngine.getInstance().changeRoom(door.getNextRoomFile());
+
+		}else if(obj instanceof Princess) {
+			ImageGUI.getInstance().setStatusMessage("Parabéns!!! Você completou o jogo");
+			ImageGUI.getInstance().dispose();
+			System.exit(0);
 		}
 		ImageGUI.getInstance().update();
 	}
@@ -112,19 +111,19 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 	@Override
 	public void Attack(GameObject a) {
 		if(a instanceof DonkeyKong) {
-			
+
 			DonkeyKong kong = (DonkeyKong) a;
-			
+
 			kong.setLife(this.attackPoints);
-			
+
 			ImageGUI.getInstance().setStatusMessage("Manel atacou Kong! Vida restante: " + kong.getLife());
-			
+
 			if(kong.getLife() <= 0) {
 				GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(kong);
 				ImageGUI.getInstance().removeImage(kong);
 				ImageGUI.getInstance().setStatusMessage("DonkeyKong foi de arrasta pra cima");
 			}
-			
+
 			ImageGUI.getInstance().update();
 		}
 	}
@@ -142,12 +141,12 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 	@Override
 	public void setLife(float dmg) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setAttack(float dmg) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

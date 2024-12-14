@@ -13,7 +13,7 @@ public class GameEngine implements Observer {
 	private static GameEngine INSTANCE; 
 
 	private GameEngine() {
-		currentRoom = new Room("room0.txt");
+		currentRoom = new Room("room2.txt");
 		currentRoom.loadRoom();
 		currentRoom.initializeRoom();
 		ImageGUI.getInstance().update();
@@ -75,6 +75,12 @@ public class GameEngine implements Observer {
 		ImageGUI.getInstance().clearImages();
 		ImageGUI.getInstance().addImages(currentRoom.getGameObjects());
 		ImageGUI.getInstance().update();
+	}
+	
+	public void endGameWithVictory() {
+		System.out.println("Parabéns!! Você salvou a princesa!");
+		ImageGUI.getInstance().setName("Vitória! Você salvou a princesa!");
+		System.exit(0);
 	}
 
 

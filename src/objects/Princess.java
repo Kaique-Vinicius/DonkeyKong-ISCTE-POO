@@ -1,9 +1,10 @@
 package objects;
 
 import interfaces.Interactable;
+import pt.iscte.poo.gui.ImageTile;
 import pt.iscte.poo.utils.Point2D;
 
-public class Princess extends GameObject implements Interactable {
+public class Princess extends GameObject implements ImageTile {
 
 	public Princess(Point2D position) {
 		super(position);
@@ -12,12 +13,6 @@ public class Princess extends GameObject implements Interactable {
 	@Override
 	public String getName() {
 		return "Princess";
-	}
-
-	@Override
-	public void Interact(GameObject i) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

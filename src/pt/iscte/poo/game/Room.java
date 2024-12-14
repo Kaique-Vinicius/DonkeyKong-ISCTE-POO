@@ -185,21 +185,29 @@ public class Room {
 
 	public void moveBananas() {
 		List<GameObject> currentBananas = GameEngine.getInstance().getCurrentRoom().getBananas();
-		List<GameObject> bananasToRemove = new ArrayList<>();
+	    List<GameObject> bananasToRemove = new ArrayList<>();
+	    Manel manel = (Manel) GameEngine.getInstance().getCurrentRoom().getManel();
 
-		for(GameObject b : currentBananas) {
-			Point2D currentPosition = b.getPosition();
-			Point2D newPosition = currentPosition.plus(Direction.DOWN.asVector());
+	    for (GameObject b : currentBananas) {
+	        Point2D currentPosition = b.getPosition();
+	        Point2D newPosition = currentPosition.plus(Direction.DOWN.asVector());
 
-			if(isWithinBounds(newPosition)) {
-				b.setPosition(newPosition);
-			}else {
-				bananasToRemove.add(b);
-				ImageGUI.getInstance().removeImage(b);
-			}
-		}
+	        if (isWithinBounds(newPosition)) {
+	            b.setPosition(newPosition);
 
-		currentBananas.removeAll(bananasToRemove);
+	            // Verificar colisão com o Manel
+	            if (newPosition.equals(manel.getPosition())) {
+	                manel.setLife(1);
+	                ImageGUI.getInstance().removeImage(b);
+	                bananasToRemove.add(b);
+	            }
+	        } else {
+	            bananasToRemove.add(b);
+	            ImageGUI.getInstance().removeImage(b); // Remove a banana que saiu dos limites
+	        }
+	    }
+
+	    currentBananas.removeAll(bananasToRemove);
 	}
 
 	public boolean isWithinBounds(Point2D position) {

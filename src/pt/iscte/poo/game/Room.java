@@ -117,7 +117,7 @@ public class Room {
 
 				}
 			}
-		}
+		} 
 
 		// Adiciona os outros objetos ao GUI
 		ImageGUI.getInstance().addImages(gameObjects);

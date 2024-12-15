@@ -8,6 +8,8 @@ import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.game.GameEngine;
 
 public class Bat extends GameObject implements Movable, Attackable {
+	
+	private float attackPoints = 1;
 
 	public Bat(Point2D position) {
 		super(position);
@@ -47,8 +49,7 @@ public class Bat extends GameObject implements Movable, Attackable {
 	
 	@Override
 	public void move(Direction direction) {
-		Point2D currentPosition = getPosition();
-		Point2D newPosition = currentPosition.plus(direction.asVector());
+		Point2D newPosition = getPosition().plus(direction.asVector());
 
 		if(!isWithinBounds(newPosition)) {
 			return;
@@ -57,15 +58,7 @@ public class Bat extends GameObject implements Movable, Attackable {
 		GameObject objectAtNewPosition = GameEngine.getInstance().getCurrentRoom().gameObjectPosition(newPosition);
 
 		if(objectAtNewPosition instanceof Manel) {
-			Manel manel = (Manel) objectAtNewPosition;
-			System.out.println("Bat atingiu o Manel! Vida antes: " + manel.getLife());
-			manel.setLife(manel.getLife() - 1);
-			System.out.println("Vida após dano: " + manel.getLife());
-			ImageGUI.getInstance().setStatusMessage("Morcego deu dano! Vida restante do Manel: " + manel.getLife());
-
-			GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(this);
-			ImageGUI.getInstance().removeImage(this);
-			ImageGUI.getInstance().update();
+			Attack(objectAtNewPosition);
 			return;
 		}
 
@@ -92,8 +85,19 @@ public class Bat extends GameObject implements Movable, Attackable {
 
 	@Override
 	public void Attack(GameObject a) {
-		// TODO Auto-generated method stub
-
+		if( a instanceof Manel) {
+			Manel manel = (Manel) a;
+			
+			manel.setLife(attackPoints);
+			
+			ImageGUI.getInstance().setStatusMessage("Morcego atacou Manel! Vida restante: " + manel.getLife());
+			if(manel.getLife() <= 0) {
+				GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(manel);
+				ImageGUI.getInstance().removeImage(manel);
+				ImageGUI.getInstance().setStatusMessage("Game Over!");
+			}
+			ImageGUI.getInstance().update();
+		}
 	}
 
 
@@ -113,8 +117,7 @@ public class Bat extends GameObject implements Movable, Attackable {
 
 	@Override
 	public float getAttack() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.attackPoints;
 	}
 
 

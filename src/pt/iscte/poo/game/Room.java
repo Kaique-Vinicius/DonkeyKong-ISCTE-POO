@@ -108,6 +108,7 @@ public class Room {
 
 					if(gameObject instanceof Manel) {
 						manel = (Manel) gameObject;
+						heroStartingPosition = position;
 					}				
 				} else {
 	                System.out.println("Nenhum objeto criado para: " + cell);
@@ -120,6 +121,10 @@ public class Room {
 		ImageGUI.getInstance().addImages(gameObjects);
 		System.out.println("Objetos adicionados ao GUI: " + gameObjects.size());
 
+	}
+	
+	public Point2D getHeroStartingPosition() {
+		return heroStartingPosition;
 	}
 
 	public void updateMovementsOfKong() {

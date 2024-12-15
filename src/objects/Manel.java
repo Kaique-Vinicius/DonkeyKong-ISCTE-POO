@@ -111,11 +111,6 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 		}else if(obj instanceof Princess) {
 			ImageGUI.getInstance().setStatusMessage("Parabéns!!! Você completou o jogo");
 			ImageGUI.getInstance().dispose();
-			try {
-				Thread.sleep(100);
-			}catch(Exception e) {
-				System.err.println(e);
-			}
 
 			System.exit(0);
 		} else if(obj instanceof HiddenTrap) {
@@ -173,7 +168,7 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 				gameEngine.subtractManelLife();
 				
 				if(gameEngine.getManelRemainingLifes() > 0) {
-					//gameEngine.getCurrentRoom().getManel().setPosition(gameEngine.getCurrentRoom().getHeroStartingPosition());
+					gameEngine.getCurrentRoom().getManel().setPosition(gameEngine.getCurrentRoom().getHeroStartingPosition());
 					imageGUI.setStatusMessage("Vidas Restantes: " + gameEngine.getManelRemainingLifes());
 					replenishLife();
 				}else {

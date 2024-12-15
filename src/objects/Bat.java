@@ -85,11 +85,9 @@ public class Bat extends GameObject implements Movable, Attackable {
 			ImageGUI.getInstance().setStatusMessage("Morcego atacou Manel! Vida restante: " + manel.getLife());
 			GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(this);
 			ImageGUI.getInstance().removeImage(this);
-			ImageGUI.getInstance().setStatusMessage("Game Over!");
 			ImageGUI.getInstance().update();
 		}
 	}
-
 
 	@Override
 	public float getLife() {

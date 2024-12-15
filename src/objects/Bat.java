@@ -8,9 +8,9 @@ import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.game.GameEngine;
 
 public class Bat extends GameObject implements Movable, Attackable {
-	
+
 	private float attackPoints = 1;
-	
+
 	public Bat(Point2D position) {
 		super(position);
 	}
@@ -19,7 +19,7 @@ public class Bat extends GameObject implements Movable, Attackable {
 	public String getName() {
 		return "Bat";
 	}
-	
+
 	@Override
 	public int getLayer() {
 		return 2;
@@ -45,7 +45,7 @@ public class Bat extends GameObject implements Movable, Attackable {
 			move(moveRandomly);
 		}
 	}
-	
+
 	@Override
 	public void move(Direction direction) {
 		Point2D newPosition = getPosition().plus(direction.asVector());
@@ -65,7 +65,6 @@ public class Bat extends GameObject implements Movable, Attackable {
 			if(!(objectAtNewPosition instanceof Wall || objectAtNewPosition instanceof Trap)) {
 				setPosition(newPosition);
 				ImageGUI.getInstance().update();
-
 			}
 		}
 	}
@@ -80,15 +79,13 @@ public class Bat extends GameObject implements Movable, Attackable {
 	public void Attack(GameObject a) {
 		if( a instanceof Manel) {
 			Manel manel = (Manel) a;
-			
+
 			manel.setLife(attackPoints);
-			
+
 			ImageGUI.getInstance().setStatusMessage("Morcego atacou Manel! Vida restante: " + manel.getLife());
-			if(manel.getLife() <= 0) {
-				GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(manel);
-				ImageGUI.getInstance().removeImage(manel);
-				ImageGUI.getInstance().setStatusMessage("Game Over!");
-			}
+			GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(this);
+			ImageGUI.getInstance().removeImage(this);
+			ImageGUI.getInstance().setStatusMessage("Game Over!");
 			ImageGUI.getInstance().update();
 		}
 	}

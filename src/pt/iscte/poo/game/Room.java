@@ -54,6 +54,7 @@ public class Room {
 				if(firstLine.startsWith("#")) {
 					try {
 						String[] splitedLine = firstLine.substring(1).split(";");
+						roomNumber = Integer.parseInt(splitedLine[0]);
 						nextRoomFile = splitedLine[1];
 					} catch(Exception e) {
 						System.err.println(e);
@@ -121,26 +122,11 @@ public class Room {
 
 	}
 
-	public void moveManel(Direction direction) {
-		manel.move(direction);
-		System.out.println(manel.getPosition());
-
-		GameObject objectAtPosition = gameObjectPosition(manel.getPosition());
-		if(objectAtPosition != null) {
-			manel.Interact(objectAtPosition);
-		}
-
-	}
-
-	public void dashManel() {
-		manel.dash(manel.getPosition());
-	}
-
 	public void updateMovementsOfKong() {
 		for(GameObject obj : gameObjects) {
 			if(obj instanceof DonkeyKong) {
 				DonkeyKong donkeykong = (DonkeyKong) obj;
-				donkeykong.updateMovement(heroStartingPosition, roomNumber);
+				donkeykong.updateMovement(getManel().getPosition(), roomNumber);
 			}
 		}
 	}
@@ -184,7 +170,12 @@ public class Room {
 	}
 
 	public GameObject getGameObjectByName(String gameObjectName) {
-		return gameObjects.stream().filter(obj -> obj.getName().equals(gameObjectName)).findFirst().orElse(null);
+		for (GameObject obj : gameObjects) {
+	        if (obj.getName().equals(gameObjectName)) {
+	            return obj;
+	        }
+	    }
+	    return null;
 	}
 
 	public Manel getManel() {

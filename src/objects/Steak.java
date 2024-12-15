@@ -5,6 +5,8 @@ import pt.iscte.poo.utils.Point2D;
 
 public class Steak extends GameObject {
 	
+	private final int steakStatus = 1;
+	
 	private static final int TURNS_TO_ROTTEN = 15;
 	private int turnsRemaining;
 	
@@ -42,10 +44,10 @@ public class Steak extends GameObject {
 	
 	public void applyEffect(Manel manel) {
 		if(isRotten) {
-			manel.setLife(manel.getLife() - 1);
+			manel.setLife(steakStatus);
 			ImageGUI.getInstance().setStatusMessage("Comeu um bife apodrecido! Perdeu Vida: " + manel.getLife());
 		} else {
-			manel.setLife(manel.getLife() + 1);
+			manel.replenishLifeSteak(steakStatus);
 			ImageGUI.getInstance().setStatusMessage("Comeu um bife! Ganhou Vida: " + manel.getLife());
 		}
 	}

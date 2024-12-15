@@ -29,11 +29,11 @@ public class GameEngine implements Observer {
 			int k = ImageGUI.getInstance().keyPressed();
 			if (Direction.isDirection(k)) {
 				Direction direction = Direction.directionFor(k);
-				currentRoom.moveManel(direction);
+				currentRoom.getManel().move(direction);
 			}
 
 			if(k == SPACEBAR_CODE) {
-				currentRoom.dashManel();
+				currentRoom.getManel().dash();
 			}
 		}
 		

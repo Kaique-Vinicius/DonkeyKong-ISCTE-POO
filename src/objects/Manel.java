@@ -45,6 +45,10 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 			Attack(objectAtNewPosition);
 			return;
 		}
+		
+		if(objectAtNewPosition != null) {
+			this.Interact(objectAtNewPosition);
+		}
 
 
 		super.setPosition(newPosition);
@@ -79,8 +83,8 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 		}
 	}
 
-	public void dash(Point2D dash) {
-		Point2D dashPosition = new Point2D(dash.getX() + 2, dash.getY());
+	public void dash() {
+		Point2D dashPosition = new Point2D(this.getPosition().getX() + 2, this.getPosition().getY());
 
 		if(isWithinBounds(dashPosition)) {
 			super.setPosition(dashPosition);
@@ -118,8 +122,8 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 			HiddenTrap trap = (HiddenTrap) obj;
 			trap.activateTrap();
 			trap.interactWithTrap(this);
-//			GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(trap);
-//			ImageGUI.getInstance().removeImage(trap);
+			GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(trap);
+			ImageGUI.getInstance().removeImage(trap);
 
 		}
 	
@@ -169,7 +173,7 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 				gameEngine.subtractManelLife();
 				
 				if(gameEngine.getManelRemainingLifes() > 0) {
-					//	gameEngine.getCurrentRoom().getManel().setPosition(gameEngine.getCurrentRoom().getHeroStartingPosition());
+					//gameEngine.getCurrentRoom().getManel().setPosition(gameEngine.getCurrentRoom().getHeroStartingPosition());
 					imageGUI.setStatusMessage("Vidas Restantes: " + gameEngine.getManelRemainingLifes());
 					replenishLife();
 				}else {
@@ -190,6 +194,10 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 	
 	public void replenishLife() {
 		this.lifePoints = 5;
+	}
+	
+	public void replenishLifeSteak(int lifePoint) {
+		this.lifePoints+=lifePoints;
 	}
 
 	@Override

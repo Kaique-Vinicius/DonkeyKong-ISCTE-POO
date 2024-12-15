@@ -10,11 +10,10 @@ import pt.iscte.poo.game.GameEngine;
 public class Bat extends GameObject implements Movable, Attackable {
 	
 	private float attackPoints = 1;
-
+	
 	public Bat(Point2D position) {
 		super(position);
 	}
-
 
 	@Override
 	public String getName() {
@@ -62,14 +61,8 @@ public class Bat extends GameObject implements Movable, Attackable {
 			return;
 		}
 
-		if(direction == Direction.DOWN && objectAtNewPosition instanceof Stairs) {
-			setPosition(newPosition);
-			ImageGUI.getInstance().update();
-			return;
-		}
-
-		if(direction == Direction.LEFT || direction == Direction.RIGHT) {
-			if(objectAtNewPosition == null || objectAtNewPosition instanceof Floor) {
+		if(direction == Direction.LEFT || direction == Direction.RIGHT || direction == Direction.DOWN) {
+			if(!(objectAtNewPosition instanceof Wall || objectAtNewPosition instanceof Trap)) {
 				setPosition(newPosition);
 				ImageGUI.getInstance().update();
 

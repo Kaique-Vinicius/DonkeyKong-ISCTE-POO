@@ -127,7 +127,4 @@ public class Bat extends GameObject implements Movable, Attackable {
 
 	}
 
-
-	
-
 }

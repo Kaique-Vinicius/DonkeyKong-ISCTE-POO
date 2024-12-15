@@ -1,6 +1,5 @@
 package objects;
 
-import interfaces.Interactable;
 import pt.iscte.poo.gui.ImageTile;
 import pt.iscte.poo.utils.Point2D;
 

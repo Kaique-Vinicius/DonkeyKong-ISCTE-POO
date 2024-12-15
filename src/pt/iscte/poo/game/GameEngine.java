@@ -1,5 +1,8 @@
 package pt.iscte.poo.game;
 
+import objects.GameObject;
+import objects.Manel;
+import objects.Trap;
 import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.observer.Observed;
 import pt.iscte.poo.observer.Observer;
@@ -53,6 +56,15 @@ public class GameEngine implements Observer {
 		
 		if(!currentRoom.getBananas().isEmpty())
 			currentRoom.moveBananas();
+		
+		currentRoom.getManel().processFallTick();
+		
+		Manel manel = currentRoom.getManel();
+		GameObject objectBelowManel = currentRoom.gameObjectPosition(manel.getPosition().plus(Direction.DOWN.asVector()));
+		if (objectBelowManel instanceof Trap) {
+	        Trap trap = (Trap) objectBelowManel;
+	        trap.applyTickDamage(manel);
+	    }
 	}
 
 	public int getProcessTick() {
@@ -92,8 +104,6 @@ public class GameEngine implements Observer {
 		System.exit(0);
 	}
 	
-	
-
 	public void subtractManelLife() {
 		manelLifes--;
 	}

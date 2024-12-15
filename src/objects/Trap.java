@@ -1,6 +1,5 @@
 package objects;
 
-import pt.iscte.poo.game.GameEngine;
 import pt.iscte.poo.utils.Point2D;
 
 public class Trap extends GameObject {
@@ -17,11 +16,8 @@ public class Trap extends GameObject {
 	}
 
 
-	public void Attack(GameObject obj) {
-		if(obj instanceof Manel) {
-			GameEngine.getInstance().getCurrentRoom().getManel().setLife(TRAP_DAMAGE);
-		}
-		
+	public void applyTickDamage(Manel manel) {
+		manel.setLife(TRAP_DAMAGE);
+		System.out.println("Armadilha ativada! Sai dai!");
 	}
-
 }

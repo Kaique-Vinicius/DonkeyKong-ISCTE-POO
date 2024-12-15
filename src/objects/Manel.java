@@ -12,6 +12,7 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 
 	private float lifePoints = 5;
 	private float attackPoints = 1;
+	private boolean isFalling = false;
 
 	public Manel(Point2D initialPosition){
 		super(initialPosition);
@@ -37,7 +38,7 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 
 		GameObject objectAtNewPosition = GameEngine.getInstance().getCurrentRoom().gameObjectPosition(newPosition);
 
-		if(objectAtNewPosition != null && objectAtNewPosition.getName().equals("Wall")) {
+		if(objectAtNewPosition != null && (objectAtNewPosition instanceof Wall || objectAtNewPosition instanceof Trap)) {
 			return;
 		}
 
@@ -45,14 +46,19 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 			Attack(objectAtNewPosition);
 			return;
 		}
-		
+
 		if(objectAtNewPosition != null) {
 			this.Interact(objectAtNewPosition);
 		}
 
 
 		super.setPosition(newPosition);
-		fall();
+		Point2D positionBelow = getPosition().plus(Direction.DOWN.asVector());
+		GameObject objectBelow = GameEngine.getInstance().getCurrentRoom().gameObjectPosition(positionBelow);
+
+		if (objectBelow == null || !(objectBelow instanceof Wall || objectBelow instanceof Stairs)) {
+			fall(); // Inicia a queda.
+		}
 	}
 
 	public boolean isWithinBounds(Point2D position) {
@@ -62,25 +68,32 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 	}
 
 	public void fall() {
-		while(true) {
-			Point2D positionBelow = getPosition().plus(Direction.DOWN.asVector());
-
-			if(!isWithinBounds(positionBelow)) {
-				break;
-			}
-
-			GameObject objectBelow = GameEngine.getInstance().getCurrentRoom().gameObjectPosition(positionBelow);
-
-			if(objectBelow != null &&
-					(objectBelow instanceof Wall || 
-							objectBelow instanceof Stairs || 
-							objectBelow instanceof Trap ||
-							objectBelow instanceof HiddenTrap)) {
-				break;
-			}
-
-			super.setPosition(positionBelow);
+		if(!isFalling) {
+			isFalling = true;
 		}
+	}
+
+	public void processFallTick() {
+		if(!isFalling) {
+			return;
+		}
+
+		Point2D positionBelow = getPosition().plus(Direction.DOWN.asVector());
+
+		if(!isWithinBounds(positionBelow)) {
+			isFalling = false;
+			return;
+		}
+
+		GameObject objectBelow = GameEngine.getInstance().getCurrentRoom().gameObjectPosition(positionBelow);
+
+		if (objectBelow != null && 
+				(objectBelow instanceof Wall || objectBelow instanceof Stairs ||  objectBelow instanceof Trap)) {
+			isFalling = false;
+			return;
+		}
+
+		super.setPosition(positionBelow);
 	}
 
 	public void dash() {
@@ -111,7 +124,7 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 		}else if(obj instanceof Princess) {
 			ImageGUI.getInstance().setStatusMessage("Parabéns!!! Você completou o jogo");
 			ImageGUI.getInstance().dispose();
-
+			ImageGUI.getInstance().showMessage("Parabens", "Parabéns!!! Você completou o jogo");
 			System.exit(0);
 		} else if(obj instanceof HiddenTrap) {
 			HiddenTrap trap = (HiddenTrap) obj;
@@ -121,7 +134,7 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 			ImageGUI.getInstance().removeImage(trap);
 
 		}
-	
+
 		ImageGUI.getInstance().update();
 	}
 
@@ -159,14 +172,14 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 	public void setLife(float dmg) {
 		GameEngine gameEngine = GameEngine.getInstance();
 		ImageGUI imageGUI = ImageGUI.getInstance();
-		
+
 		if(gameEngine.getManelRemainingLifes() != 0) {
 			lifePoints -= dmg;
-			
+
 			if (lifePoints <= 0) {
 				lifePoints = 0;
 				gameEngine.subtractManelLife();
-				
+
 				if(gameEngine.getManelRemainingLifes() > 0) {
 					gameEngine.getCurrentRoom().getManel().setPosition(gameEngine.getCurrentRoom().getHeroStartingPosition());
 					imageGUI.setStatusMessage("Vidas Restantes: " + gameEngine.getManelRemainingLifes());
@@ -178,19 +191,19 @@ public class Manel extends GameObject implements Movable, Interactable, Attackab
 			} else {
 				System.out.println("Manel sofreu dano! Vida restante: " + lifePoints);
 			}
-			
+
 			imageGUI.setStatusMessage("Vida do Manel: " + lifePoints);
-			
+
 		}else {
 			imageGUI.setStatusMessage("GameOver!");
 		}
 
 	}
-	
+
 	public void replenishLife() {
 		this.lifePoints = 5;
 	}
-	
+
 	public void replenishLifeSteak(int lifePoint) {
 		this.lifePoints+=lifePoints;
 	}

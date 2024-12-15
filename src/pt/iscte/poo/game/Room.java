@@ -13,6 +13,7 @@ import objects.Floor;
 import objects.GameObject;
 import objects.Manel;
 import objects.Steak;
+import objects.Trap;
 //Utils imports
 import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.utils.Direction;
@@ -31,7 +32,6 @@ public class Room {
 	private List<GameObject> bananas;
 
 	private char[][] room;
-
 
 	public Room(String roomFile) {
 		manel = new Manel(heroStartingPosition);
@@ -96,7 +96,7 @@ public class Room {
 
 		        System.out.println("Caractere encontrado: " + cell + " na posição: " + position);
 				
-				if(cell == 's' || cell == 'H' || cell == 'G' || cell == 'b' || cell == 'P') {
+				if(cell == 's' || cell == 'H' || cell == 'G' || cell == 'b' || cell == 'P' || cell == 'B') {
 					gameObjects.add(new Floor(position));
 				}
 
@@ -190,6 +190,11 @@ public class Room {
 	public List<GameObject> getGameObjects() {
 		return gameObjects;
 	}
+	
+	public Trap getTrap() {
+		Trap trap = (Trap) getGameObjectByName("Trap");
+		return trap;
+	}
 
 	public void addBananas(GameObject banana) {
 		this.bananas.add(banana);
@@ -222,9 +227,10 @@ public class Room {
 	            ImageGUI.getInstance().removeImage(b); // Remove a banana que saiu dos limites
 	        }
 	    }
-
+	    
 	    currentBananas.removeAll(bananasToRemove);
 	}
+	
 
 	public boolean isWithinBounds(Point2D position) {
 		int x = position.getX();

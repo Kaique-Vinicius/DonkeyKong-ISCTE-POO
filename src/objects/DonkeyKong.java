@@ -40,7 +40,8 @@ public class DonkeyKong extends GameObject implements Movable, Attackable {
 
 		if(objectAtNewPosition != null && (objectAtNewPosition instanceof Wall) || 
 				objectAtNewPosition instanceof Stairs || 
-				objectAtNewPosition instanceof Door) {
+				objectAtNewPosition instanceof Door ||
+				objectAtNewPosition instanceof Princess) {
 			return;
 		}
 
